@@ -24,7 +24,43 @@ public class ItemServlet extends HttpServlet {
     Connection connection=null;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        PrintWriter writer = resp.getWriter();
+        resp.setContentType("application/json");
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM item");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+            while (resultSet.next()) {
+                String id = resultSet.getString(1);
+                String name = resultSet.getString(2);
+                int qty = resultSet.getInt(3);
+                double price = resultSet.getDouble(4);
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("id",id);
+                objectBuilder.add("name",name);
+                objectBuilder.add("qty",qty);
+                objectBuilder.add("price",price);
+                arrayBuilder.add(objectBuilder.build());
+            }
+            JsonObjectBuilder object = Json.createObjectBuilder();
+            object.add("status",200);
+            object.add("message","successfully collected");
+            object.add("data",arrayBuilder.build());
+            writer.print(object.build());
+            connection.close();
+        } catch (SQLException throwables) {
+            JsonObjectBuilder object = Json.createObjectBuilder();
+            object.add("status",200);
+            object.add("message","successfully collected");
+            object.add("data","");
+            writer.print(object.build());
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

@@ -13,9 +13,6 @@ function save() {
     let cusTel = $("#txtCusTel").val();
 
     if ($("#btnSaveOrUpdate").text() == "Save") {
-        var customer = new Customer(cusId, cusName, cusAddress, cusTel);
-        customers.push(customer);
-
         let customer1 = {
             id: $("#txtCusId").val(),
             name: $("#txtCusName").val(),

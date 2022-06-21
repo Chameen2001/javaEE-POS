@@ -1,3 +1,4 @@
+refresh_item_table();
 $("#item_btn_Save_Or_Update").attr("disabled", true);
 
 //Add Or Update Function
@@ -45,46 +46,58 @@ function item_save() {
 }
 
 function refresh_item_table() {
-  $("#item_tbl_body").empty();
-  for (let index = 0; index < items.length; index++) {
-    let newRaw = `<tr><th scope="row">${items[
-      index
-    ].get_item_id()}</th><td>${items[index].get_item_name()}</td><td>${items[
-      index
-    ].get_item_quantity()}</td><td>${items[
-      index
-    ].get_item_price()}</td><td><button type="button" class="btn btn-danger ms-3">Delete</button></td></tr>`;
 
-    // Add New Row
-    $("#item_tbl_body").append(newRaw);
-
-    $("#item_tbl_body>tr").off();
-
-    // Row Click Function
-    $("#item_tbl_body>tr").click(function () {
-      // Add Data To Text Field
-      txt_item_id.val($(this).children(":eq(0)").text());
-      txt_item_name.val($(this).children(":eq(1)").text());
-      txt_item_quantity.val($(this).children(":eq(2)").text());
-      txt_item_price.val($(this).children(":eq(3)").text());
-
-      change_button_to_update();
-    });
-
-    $("#item_tbl_body>tr>td:nth-child(5)").off();
-
-    // Delete A Row
-    $("#item_tbl_body>tr>td:nth-child(5)").on("click", function () {
+  $.ajax({
+    url:"http://localhost:8080/JavEE_POS/item",
+    method:"GET",
+    success:function (response) {
+      let items = response.data;
+      $("#item_tbl_body").empty();
       for (let index = 0; index < items.length; index++) {
-        if (
-          items[index].get_item_id() == $(this).parent().children("th").text()
-        ) {
-          items.splice(index, 1);
-          refresh_item_table();
-        }
+        let newRaw = `<tr><th scope="row">${items[
+            index
+            ].id}</th><td>${items[index].name}</td><td>${items[
+            index
+            ].qty}</td><td>${items[
+            index
+            ].price}</td><td><button type="button" class="btn btn-danger ms-3">Delete</button></td></tr>`;
+
+        // Add New Row
+        $("#item_tbl_body").append(newRaw);
+
+        $("#item_tbl_body>tr").off();
+
+        // Row Click Function
+        $("#item_tbl_body>tr").click(function () {
+          // Add Data To Text Field
+          txt_item_id.val($(this).children(":eq(0)").text());
+          txt_item_name.val($(this).children(":eq(1)").text());
+          txt_item_quantity.val($(this).children(":eq(2)").text());
+          txt_item_price.val($(this).children(":eq(3)").text());
+
+          change_button_to_update();
+        });
+
+        $("#item_tbl_body>tr>td:nth-child(5)").off();
+
+        // Delete A Row
+        $("#item_tbl_body>tr>td:nth-child(5)").on("click", function () {
+          for (let index = 0; index < items.length; index++) {
+            if (
+                items[index].get_item_id() == $(this).parent().children("th").text()
+            ) {
+              items.splice(index, 1);
+              refresh_item_table();
+            }
+          }
+        });
       }
-    });
-  }
+    },
+    error:function (error) {
+
+    }
+  });
+
 }
 
 let txt_item_id = $("#txtItmId");
