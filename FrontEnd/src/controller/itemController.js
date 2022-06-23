@@ -12,19 +12,42 @@ function item_save() {
   let item_price = $("#txtItmPrice").val();
   let item_image = $("#txtItemImg").val();
 
+  let item={
+    id:item_id,
+    name:item_name,
+    qty:item_quantity,
+    price:item_price
+  };
+
   if ($("#item_btn_Save_Or_Update").text() == "Save") {
-    var item = new Item(item_id, item_name, item_quantity, item_price,item_image);
-    items.push(item);
-  } else {
-    for (let index = 0; index < items.length; index++) {
-      if (items[index].get_item_id() == item_id) {
-        items[index].set_item_name(item_name);
-        items[index].set_item_quantity(item_quantity);
-        items[index].set_item_price(item_price);
-        items[index].set_item_image(item_image);
-        break;
+    $.ajax({
+      url: "http://localhost:8080/JavEE_POS/item",
+      method: "POST",
+      contentType:"application/json",
+      data:JSON.stringify(item),
+      success:function (response) {
+        alert(response.message);
+        refresh_item_table();
+      },
+      error:function (error) {
+        alert(error.message);
       }
-    }
+    })
+  } else {
+
+    $.ajax({
+      url:"http://localhost:8080/JavEE_POS/item",
+      method:"PUT",
+      contentType: "applicaion/json",
+      data:JSON.stringify(item),
+      success:function (response) {
+        alert(response.message);
+        refresh_item_table();
+      },
+      error:function (error) {
+        alert(response.message);
+      }
+    })
   }
 
   refresh_item_table();
@@ -132,11 +155,13 @@ $("#txtItmId").on("keyup", function (event) {
 });
 
 function check_button_state_in_item(value) {
+  let items = $("#tblBody").children("tr").children("th");
   if (items.length == 0) {
     $("#item_btn_Save_Or_Update").text("Save");
   } else {
+
     for (let index = 0; index < items.length; index++) {
-      if (items[index].get_item_id() == value) {
+      if (items.eq(index).text() == value) {
         change_button_to_update();
         break;
       } else {

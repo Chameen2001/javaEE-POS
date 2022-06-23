@@ -1,5 +1,11 @@
 package servlets;
 
+import bo.BOFactory;
+import bo.SuperBO;
+import bo.custom.ItemBO;
+import bo.custom.impl.ItemBOImpl;
+import dao.CrudUtil;
+
 import javax.annotation.Resource;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -16,32 +22,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @WebServlet(urlPatterns = "/item")
 public class ItemServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     DataSource dataSource;
-    Connection connection=null;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ItemBO itemBO = (ItemBO) BOFactory.getInstance().getBOImpl(BOFactory.BOType.ITEM_BO);
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
+        Connection connection = null;
         try {
-            connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM item");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            connection=dataSource.getConnection();
+            ResultSet resultSet =CrudUtil.executeQuery(connection,"SELECT * FROM item");
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
             while (resultSet.next()) {
-                String id = resultSet.getString(1);
-                String name = resultSet.getString(2);
-                int qty = resultSet.getInt(3);
-                double price = resultSet.getDouble(4);
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("id",id);
-                objectBuilder.add("name",name);
-                objectBuilder.add("qty",qty);
-                objectBuilder.add("price",price);
+                objectBuilder.add("id",resultSet.getString(1));
+                objectBuilder.add("name",resultSet.getString(2));
+                objectBuilder.add("qty",resultSet.getInt(3));
+                objectBuilder.add("price",resultSet.getDouble(4));
                 arrayBuilder.add(objectBuilder.build());
+
             }
             JsonObjectBuilder object = Json.createObjectBuilder();
             object.add("status",200);
@@ -60,6 +66,7 @@ public class ItemServlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
     }
 

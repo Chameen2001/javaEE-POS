@@ -169,7 +169,7 @@ $("#txtCusId").on("keyup", function (event) {
 });
 
 function check_button_state(value) {
-    $($("#tblBody").children("tr").children("th")[0]).text();
+    /*$($("#tblBody").children("tr").children("th")[0]).text();*/
     let customers = $("#tblBody").children("tr").children("th");
     if (customers.length === 0) {
         $("#btnSaveOrUpdate").text("Save");

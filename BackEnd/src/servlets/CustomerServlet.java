@@ -1,5 +1,10 @@
 package servlets;
 
+import bo.BOFactory;
+import bo.custom.CustomerBO;
+import dao.DAOFactory;
+import dto.CustomerDTO;
+
 import javax.annotation.Resource;
 import javax.json.*;
 import javax.servlet.ServletException;
@@ -11,40 +16,41 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     DataSource dataSource;
     Connection connection = null;
+
+    CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBOImpl(BOFactory.BOType.CUSTOMER_BO);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         resp.setContentType("Application/json");
 
         try {
             connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customer");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers(connection);
+            JsonObjectBuilder object = Json.createObjectBuilder();
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-            while (resultSet.next()) {
-                String id = resultSet.getString(1);
-                String name = resultSet.getString(2);
-                String address = resultSet.getString(3);
-                int tel = resultSet.getInt(4);
+            allCustomers.forEach(customer -> {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("id",id);
-                objectBuilder.add("name",name);
-                objectBuilder.add("address",address);
-                objectBuilder.add("tel",tel);
+                objectBuilder.add("id",customer.getId());
+                objectBuilder.add("name",customer.getName());
+                objectBuilder.add("address",customer.getAddress());
+                objectBuilder.add("tel",customer.getTel());
                 arrayBuilder.add(objectBuilder.build());
-            }
-            JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-            jsonObjectBuilder.add("status",200);
-            jsonObjectBuilder.add("message","successfully collected");
-            jsonObjectBuilder.add("data",arrayBuilder.build());
+            });
+            object.add("status","200");
+            object.add("message","successfully collected");
+            object.add("data",arrayBuilder.build());
+
+
             PrintWriter writer = resp.getWriter();
-            writer.println(jsonObjectBuilder.build());
-            connection.close();
+            writer.println(object.build());
         } catch (SQLException throwables) {
             JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
             jsonObjectBuilder.add("status",400);

@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 @WebFilter(urlPatterns = "/*")
 public class MyFilter implements Filter {
-    @Resource(name = "java:comp/env/jdbc/pool")
-    DataSource dataSource;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -25,17 +25,13 @@ public class MyFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-
+        System.out.println("awooo");
         filterChain.doFilter(servletRequest,servletResponse);
         httpServletResponse.addHeader("Access-Control-Allow-Origin","*");
         httpServletResponse.addHeader("Access-Control-Allow-Methods", "DELETE, PUT");
         httpServletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type");
-        try {
-            Connection connection = dataSource.getConnection();
-            connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        httpServletResponse.addHeader("Ammo","Awooo");
+        System.out.println("giyo");
     }
 
     @Override
