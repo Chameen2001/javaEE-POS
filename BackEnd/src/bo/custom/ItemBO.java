@@ -3,19 +3,20 @@ package bo.custom;
 import bo.SuperBO;
 import dto.ItemDTO;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface ItemBO extends SuperBO {
-    ArrayList<ItemDTO> getAllItem();
+    ArrayList<ItemDTO> getAllItem(Connection connection) throws SQLException;
 
-    void deleteItem(String code) throws SQLException, ClassNotFoundException ;
+    void deleteItem(Connection connection, String code) throws SQLException;
 
-    void addItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException ;
+    void addItem(Connection connection, ItemDTO itemDTO) throws SQLException;
 
-    void updateItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException ;
+    void updateItem(Connection connection, ItemDTO itemDTO) throws SQLException;
 
-    boolean ifItemExist(String code) throws SQLException, ClassNotFoundException ;
+    boolean ifItemExist(Connection connection, String code) throws SQLException;
 
-    String generateNewID() throws SQLException, ClassNotFoundException ;
+    String generateNewID(Connection connection) throws SQLException;
 }

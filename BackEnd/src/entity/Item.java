@@ -1,45 +1,38 @@
 package entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Item {
-    private String code;
-    private String description;
-    private int qtyOnHand;
+public class Item implements Serializable {
+    private String id;
+    private String name;
     private BigDecimal unitPrice;
+    private int qtyOnHand;
 
     public Item() {
     }
 
-    public Item(String code, String description, int qtyOnHand, BigDecimal unitPrice) {
-        this.code = code;
-        this.description = description;
-        this.qtyOnHand = qtyOnHand;
+    public Item(String id, String name, int qtyOnHand, BigDecimal unitPrice) {
+        this.id = id;
+        this.name = name;
         this.unitPrice = unitPrice;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getQtyOnHand() {
-        return qtyOnHand;
-    }
-
-    public void setQtyOnHand(int qtyOnHand) {
         this.qtyOnHand = qtyOnHand;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public BigDecimal getUnitPrice() {
@@ -50,13 +43,21 @@ public class Item {
         this.unitPrice = unitPrice;
     }
 
+    public int getQtyOnHand() {
+        return qtyOnHand;
+    }
+
+    public void setQtyOnHand(int qtyOnHand) {
+        this.qtyOnHand = qtyOnHand;
+    }
+
     @Override
     public String toString() {
-        return "Item{" +
-                "code='" + code + '\'' +
-                ", description='" + description + '\'' +
-                ", qtyOnHand=" + qtyOnHand +
+        return "ItemTM{" +
+                "code='" + id + '\'' +
+                ", description='" + name + '\'' +
                 ", unitPrice=" + unitPrice +
+                ", qtyOnHand=" + qtyOnHand +
                 '}';
     }
 }
