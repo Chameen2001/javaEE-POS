@@ -10,23 +10,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerDAOImpl implements CustomerDAO {
+
+
     @Override
-    public boolean add(Customer customer) throws SQLException {
-        return false;
+    public boolean add(Connection connection, Customer customer) throws SQLException {
+        boolean result = CrudUtil.executeUpdate(connection, "Insert into customer values (?,?,?,?)", customer.getId(), customer.getName(), customer.getAddress(), customer.getTel());
+        connection.close();
+        return result;
     }
 
     @Override
-    public boolean delete(String s) throws SQLException {
-        return false;
+    public boolean delete(Connection connection, String s) throws SQLException {
+        boolean result = CrudUtil.executeUpdate(connection, "Delete from customer where id=?", s);
+        connection.close();
+        return result;
     }
 
     @Override
-    public boolean update(Customer customer) throws SQLException {
-        return false;
+    public boolean update(Connection connection, Customer customer) throws SQLException {
+        boolean result = CrudUtil.executeUpdate(connection, "Update customer Set name=?, address=?, tel=? Where id=?", customer.getName(), customer.getAddress(), customer.getTel(), customer.getId());
+        connection.close();
+        return result;
     }
 
     @Override
-    public Customer search(String s) throws SQLException {
+    public Customer search(Connection connection, String s) throws SQLException {
         return null;
     }
 

@@ -6,14 +6,8 @@ $("#btnSaveOrUpdate").attr("disabled", true);
 $("#btnSaveOrUpdate").click(save);
 
 function save() {
-    // Get Value From Text Fields
-    let cusId = $("#txtCusId").val();
-    let cusName = $("#txtCusName").val();
-    let cusAddress = $("#txtCusAddress").val();
-    let cusTel = $("#txtCusTel").val();
-
     if ($("#btnSaveOrUpdate").text() == "Save") {
-        let customer1 = {
+        let customer = {
             id: $("#txtCusId").val(),
             name: $("#txtCusName").val(),
             address: $("#txtCusAddress").val(),
@@ -24,7 +18,7 @@ function save() {
             url: "http://localhost:8080/JavEE_POS/customer",
             method: "POST",
             contentType: "application/json",
-            data: JSON.stringify(customer1),
+            data: JSON.stringify(customer),
             success: function (res) {
                 console.log(res)
                 if (res.status == 200) {
@@ -39,7 +33,7 @@ function save() {
 
 
     } else {
-        let customer1 = {
+        let customer = {
             id: $("#txtCusId").val(),
             name: $("#txtCusName").val(),
             address: $("#txtCusAddress").val(),
@@ -50,7 +44,7 @@ function save() {
             url: "http://localhost:8080/JavEE_POS/customer",
             method: "PUT",
             contentType: "application/json",
-            data: JSON.stringify(customer1),
+            data: JSON.stringify(customer),
             success: function (response) {
                 console.log("updated")
                 refreshTable()
@@ -199,7 +193,7 @@ $("#txtCusAddress").on("keyup", function (event) {
 });
 
 $("#txtCusTel").on("keyup", function (event) {
-    checkCollision(/[0-9]{10}/, 0, "#txtCusTel", 0);
+    checkCollision(/^[0-9]{10}$|^[0-9]{9}$/, 0, "#txtCusTel", 0);
 });
 
 //----------------------------------Collision Checking Function----------------------------------------------

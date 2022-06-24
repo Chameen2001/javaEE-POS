@@ -10,5 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface CustomerBO extends SuperBO {
-    public ArrayList<CustomerDTO> getAllCustomers(Connection connection) throws SQLException;
+    ArrayList<CustomerDTO> getAllCustomers(Connection connection) throws SQLException;
+
+    boolean addCustomer(Connection connection, CustomerDTO customerDTO) throws SQLException;
+
+    boolean updateCustomer(Connection connection, CustomerDTO customerDTO) throws SQLException;
+
+    boolean deleteCustomer(Connection connection, String id) throws SQLException;
 }

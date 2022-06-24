@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class MyFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -25,13 +25,11 @@ public class MyFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-        System.out.println("awooo");
+
         filterChain.doFilter(servletRequest,servletResponse);
         httpServletResponse.addHeader("Access-Control-Allow-Origin","*");
         httpServletResponse.addHeader("Access-Control-Allow-Methods", "DELETE, PUT");
         httpServletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type");
-        httpServletResponse.addHeader("Ammo","Awooo");
-        System.out.println("giyo");
     }
 
     @Override
