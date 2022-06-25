@@ -1,18 +1,17 @@
 package dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 public class ItemDTO implements Serializable {
     private String id;
     private String name;
-    private BigDecimal unitPrice;
+    private double unitPrice;
     private int qtyOnHand;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(String id, String name,int qtyOnHand,BigDecimal unitPrice) {
+    public ItemDTO(String id, String name, int qtyOnHand, double unitPrice) {
         this.id = id;
         this.name = name;
         this.unitPrice = unitPrice;
@@ -35,11 +34,11 @@ public class ItemDTO implements Serializable {
         this.name = name;
     }
 
-    public BigDecimal getUnitPrice() {
+    public double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 

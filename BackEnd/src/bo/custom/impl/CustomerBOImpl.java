@@ -6,10 +6,6 @@ import dao.custom.CustomerDAO;
 import dto.CustomerDTO;
 import entity.Customer;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;

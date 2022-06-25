@@ -8,9 +8,7 @@ import dao.CrudUtil;
 import dto.ItemDTO;
 
 import javax.annotation.Resource;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +36,6 @@ public class ItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         PrintWriter writer = resp.getWriter();
-        resp.setContentType("application/json");
         try {
             connection = dataSource.getConnection();
             ArrayList<ItemDTO> allItem = itemBO.getAllItem(connection);
@@ -62,17 +60,58 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+        PrintWriter writer = resp.getWriter();
+        try {
+            connection = dataSource.getConnection();
+            if (itemBO.addItem(connection, new ItemDTO(jsonObject.getString("id"), jsonObject.getString("name"), Integer.parseInt(jsonObject.getString("qty")), Double.parseDouble(jsonObject.getString("price"))))) {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("status", "200");
+                objectBuilder.add("message", "successfully added");
+                objectBuilder.add("data", "");
+                writer.print(objectBuilder.build());
+            }
+        } catch (SQLException throwables) {
+            sendServerSideError(throwables, writer);
+        }
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+        PrintWriter writer = resp.getWriter();
+        try {
+            connection = dataSource.getConnection();
+            if (itemBO.updateItem(connection, new ItemDTO(jsonObject.getString("id"), jsonObject.getString("name"), Integer.parseInt(jsonObject.getString("qty")), Double.parseDouble(jsonObject.getString("price"))))) {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("status", "200");
+                objectBuilder.add("message", "successfully update");
+                objectBuilder.add("data", "");
+                writer.print(objectBuilder.build());
+            }
+        } catch (SQLException throwables) {
+            sendServerSideError(throwables, writer);
+        }
 
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
+        PrintWriter writer = resp.getWriter();
+        try {
+            connection = dataSource.getConnection();
+            if (itemBO.deleteItem(connection, req.getParameter("itemId"))) {
+                JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                objectBuilder.add("status", "200");
+                objectBuilder.add("message", "Successfully deleted");
+                objectBuilder.add("data", "");
+                writer.print(objectBuilder.build());
+            }
+        } catch (SQLException throwables) {
+            sendServerSideError(throwables, writer);
+        }
     }
 
     private void sendServerSideError(SQLException throwables, PrintWriter writer) {

@@ -2,7 +2,6 @@ package bo.custom.impl;
 
 import bo.custom.ItemBO;
 import dao.DAOFactory;
-import dao.custom.CustomerDAO;
 import dao.custom.ItemDAO;
 import dto.ItemDTO;
 import entity.Item;
@@ -24,18 +23,18 @@ public class ItemBOImpl implements ItemBO {
     }
 
     @Override
-    public void deleteItem(Connection connection, String code) throws SQLException {
-
+    public boolean deleteItem(Connection connection, String id) throws SQLException {
+        return itemDAO.delete(connection, id);
     }
 
     @Override
-    public void addItem(Connection connection, ItemDTO itemDTO) throws SQLException {
-
+    public boolean addItem(Connection connection, ItemDTO itemDTO) throws SQLException {
+        return itemDAO.add(connection, new Item(itemDTO.getId(), itemDTO.getName(), itemDTO.getQtyOnHand(), itemDTO.getUnitPrice()));
     }
 
     @Override
-    public void updateItem(Connection connection, ItemDTO itemDTO) throws SQLException {
-
+    public boolean updateItem(Connection connection, ItemDTO itemDTO) throws SQLException {
+        return itemDAO.update(connection, new Item(itemDTO.getId(), itemDTO.getName(), itemDTO.getQtyOnHand(), itemDTO.getUnitPrice()));
     }
 
     @Override

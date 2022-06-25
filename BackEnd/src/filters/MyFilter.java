@@ -25,11 +25,12 @@ public class MyFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-
-        filterChain.doFilter(servletRequest,servletResponse);
-        httpServletResponse.addHeader("Access-Control-Allow-Origin","*");
+        filterChain.doFilter(servletRequest, servletResponse);
+        httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
         httpServletResponse.addHeader("Access-Control-Allow-Methods", "DELETE, PUT");
         httpServletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type");
+
+        httpServletResponse.setContentType("application/json");
     }
 
     @Override

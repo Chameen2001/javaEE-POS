@@ -6,17 +6,13 @@ $("#item_btn_Save_Or_Update").click(item_save);
 
 function item_save() {
   // Get Value From Text Fields
-  let item_id = $("#txtItmId").val();
-  let item_name = $("#txtItmName").val();
-  let item_quantity = $("#txtItmQty").val();
-  let item_price = $("#txtItmPrice").val();
   let item_image = $("#txtItemImg").val();
 
   let item={
-    id:item_id,
-    name:item_name,
-    qty:item_quantity,
-    price:item_price
+    id: $("#txtItmId").val(),
+    name: $("#txtItmName").val(),
+    qty: $("#txtItmQty").val(),
+    price: $("#txtItmPrice").val()
   };
 
   if ($("#item_btn_Save_Or_Update").text() == "Save") {
@@ -105,22 +101,30 @@ function refresh_item_table() {
 
         // Delete A Row
         $("#item_tbl_body>tr>td:nth-child(5)").on("click", function () {
-          for (let index = 0; index < items.length; index++) {
-            if (
-                items[index].get_item_id() == $(this).parent().children("th").text()
-            ) {
-              items.splice(index, 1);
-              refresh_item_table();
-            }
-          }
+          delete_item($(this).parent().children("th").text());
         });
       }
     },
-    error:function (error) {
+    error: function (error) {
 
     }
   });
 
+}
+
+function delete_item(itemId) {
+  console.log("delete pressed")
+  $.ajax({
+    url: "http://localhost:8080/JavEE_POS/item?itemId=" + itemId,
+    method: "DELETE",
+    success: function (response) {
+      alert(response.message);
+      refresh_item_table();
+    },
+    error: function (error) {
+      alert(error.message);
+    }
+  })
 }
 
 let txt_item_id = $("#txtItmId");
