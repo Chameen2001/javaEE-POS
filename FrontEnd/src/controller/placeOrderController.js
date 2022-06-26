@@ -3,14 +3,14 @@ var refresh_customer_cmb = function () {
   $("#cust-list").append(
     `<li class="cus-option"><img src="" alt=""/><p>None</p></li>`
   );
+  let customers = $("#tblBody").children();
   for (let index = 0; index < customers.length; index++) {
-    console.log("callded");
     var raw = `<li class="cus-option">
     <img
       src="https://w7.pngwing.com/pngs/419/473/png-transparent-computer-icons-user-profile-login-user-heroes-sphere-black-thumbnail.png"
       alt=""
     />
-    <p>${customers[index].getName()} (${customers[index].getCID()})</p>
+    <p>${$(customers[index]).children("td:nth-child(2)").text()} (${$(customers[index]).children("th").text()})</p>
   </li>`;
 
     $("#cust-list").append(raw);
@@ -38,15 +38,11 @@ var refresh_item_cmb = function () {
   />
   <p>None</p>
 </li>`);
+  let items = $("#item_tbl_body").children();
   for (let index = 0; index < items.length; index++) {
     var raw = `<li class="item-option">
-    <img
-      src="${items[index].get_item_image()}"
-      alt=""
-    />
-    <p>${items[index].get_item_name()} (${items[index].get_item_id()})</p>
+    <p>${$(items[index]).children("td:nth-child(2)").text()} (${$(items[index]).children("th").text()})</p>
     </li>`;
-
     $("#item-list").append(raw);
     var item_option = $(".item-option");
 

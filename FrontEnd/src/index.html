@@ -403,8 +403,7 @@
                     class="col d-flex justify-content-center align-items-center border-end"
             >
                 <div
-                        class="d-flex justify-content-center align-items-center flex-column"
-                        id="add-customer-box"
+                        class="d-flex justify-content-center align-items-center flex-column add-customer-box"
                 >
                     <span class="fs-3">Add Customer</span>
                     <div class="mb-3 mt-5">
@@ -459,8 +458,7 @@
                 >
                     <input
                             type="email"
-                            class="form-control ms-3"
-                            id="cus-search-box"
+                            class="form-control ms-3 cus-search-box"
                             aria-describedby="emailHelp"
                             placeholder="Search"
                     />
@@ -502,8 +500,7 @@
                     class="col d-flex justify-content-center align-items-center border-end"
             >
                 <div
-                        class="d-flex justify-content-center align-items-center flex-column"
-                        id="add-customer-box"
+                        class="d-flex justify-content-center align-items-center flex-column add-customer-box"
                 >
                     <span class="fs-3">Add Item</span>
                     <div class="mb-3 mt-5">
@@ -566,8 +563,7 @@
                 >
                     <input
                             type="email"
-                            class="form-control ms-3"
-                            id="cus-search-box"
+                            class="form-control ms-3 cus-search-box"
                             aria-describedby="emailHelp"
                             placeholder="Search"
                     />
@@ -611,8 +607,7 @@
                 >
                     <input
                             type="email"
-                            class="form-control ms-3"
-                            id="cus-search-box"
+                            class="form-control ms-3 cus-search-box"
                             aria-describedby="emailHelp"
                             placeholder="Serach Order By Order ID"
                     />
@@ -640,7 +635,7 @@
     </section>
 </section>
 
-
+<section id="sss"></section>
 
 
 
@@ -682,14 +677,14 @@
     });
 
 
-
     customers.push(
         new Customer("C00-001", "Chameen", "Gampaha", "0767047467")
     );
-    items.push(new Item("I001", "Lux", 30, 75,"https://www.ubuy.com.lk/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNjFBNWJuWXFBSEwuX1NMMTAwMF8uanBn.jpg"));
+    items.push(new Item("I001", "Lux", 30, 75, "https://www.ubuy.com.lk/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNjFBNWJuWXFBSEwuX1NMMTAwMF8uanBn.jpg"));
 
-    refresh_item_cmb();
-    refresh_customer_cmb();
+    setTimeout(refresh_item_cmb, 100);
+    console.log("ayeeeee");
+    setTimeout(refresh_customer_cmb, 100);
 
     $("#add-customer-section").css("display", "none");
     $("#add-item-section").css("display", "none");

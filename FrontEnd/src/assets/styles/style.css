@@ -82,7 +82,7 @@
     color: #ffc035;
 }
 
-#add-customer-box{
+.add-customer-box {
     width: 750px;
     height: 700px;
 }
@@ -91,7 +91,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-#cus-search-box{
+.cus-search-box {
     width: 50%;
 }
 
